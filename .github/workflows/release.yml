@@ -44,7 +44,7 @@ jobs:
           echo "::set-output name=jar_path::$JAR_FILE" #For compatibility with older github versions
 
       - name: Create Release
-        if: github.ref == 'refs/heads/main'  # o la rama correcta
+        if: github.ref == 'refs/heads/neoforge_1.21.1'  # o la rama correcta
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,7 +58,7 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
-        if: github.ref == 'refs/heads/main' # o la rama correcta
+        if: github.ref == 'refs/heads/neoforge_1.21.1' # o la rama correcta
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
