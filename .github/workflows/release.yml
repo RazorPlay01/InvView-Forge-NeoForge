@@ -16,7 +16,12 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
-
+      - name: Get the last tag
+        id: get_last_tag
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0)
+          echo "LAST_TAG=$LAST_TAG" >> $GITHUB_OUTPUT
+          echo "::set-output name=last_tag::$LAST_TAG"
       - name: Setup JDK 21
         uses: actions/setup-java@v4
         with:
@@ -49,11 +54,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }} # Puedes usar github.sha, una versión, o cualquier estrategia de versionado
-          release_name: Release ${{ github.sha }} # Personaliza el nombre del release
+          tag_name: ${{ steps.get_last_tag.outputs.last_tag }} # Puedes usar github.sha, una versión, o cualquier estrategia de versionado
+          release_name: Release ${{ steps.get_last_tag.outputs.last_tag }} # Personaliza el nombre del release
           body: |
             Release creado automáticamente desde la rama `neoforge_1.21.1`.
-            Cambios incluidos: ${{ github.sha }}
+            Cambios incluidos: ${{ steps.get_last_tag.outputs.last_tag }}
           draft: false
           prerelease: false
 
