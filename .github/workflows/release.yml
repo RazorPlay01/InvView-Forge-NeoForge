@@ -1,0 +1,69 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - neoforge_1.21.1  # o la rama donde quieres que se publique
+
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Find JAR file(s)
+        id: find_jar
+        run: |
+          JAR_FILE=$(find ./build/libs -name "*.jar" -print -quit)
+          if [[ -z "$JAR_FILE" ]]; then
+            echo "No JAR file found in ./build/libs"
+            exit 1  # Terminar el workflow si no encuentra el JAR
+          fi
+          echo "JAR_FILE=$JAR_FILE" >> "$GITHUB_OUTPUT"
+          echo "::set-output name=jar_path::$JAR_FILE" #For compatibility with older github versions
+
+      - name: Create Release
+        if: github.ref == 'refs/heads/main'  # o la rama correcta
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.sha }} # Puedes usar github.sha, una versión, o cualquier estrategia de versionado
+          release_name: Release ${{ github.sha }} # Personaliza el nombre del release
+          body: |
+            Release creado automáticamente desde la rama `neoforge_1.21.1`.
+            Cambios incluidos: ${{ github.sha }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        if: github.ref == 'refs/heads/main' # o la rama correcta
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.find_jar.outputs.jar_path }}
+          asset_name: ${{ github.event.repository.name }}-${{ github.sha }}.jar # Personaliza el nombre del archivo
+          asset_content_type: application/java-archive
