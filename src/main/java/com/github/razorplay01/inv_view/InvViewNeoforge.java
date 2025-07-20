@@ -1,5 +1,6 @@
 package com.github.razorplay01.inv_view;
 
+import com.github.razorplay01.inv_view.event.InventoryProviderEvents;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
@@ -21,6 +22,7 @@ public class InvViewNeoforge {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public InvViewNeoforge(IEventBus modEventBus, ModContainer modContainer) {
+        modEventBus.addListener(InventoryProviderEvents::registerProviders);
         LOGGER.info("InvView Neoforge initialized.");
     }
 

@@ -3,6 +3,7 @@ package com.github.razorplay01.inv_view.command;
 import com.github.razorplay01.inv_view.InvViewNeoforge;
 import com.github.razorplay01.inv_view.api.InventoryProvider;
 import com.github.razorplay01.inv_view.api.InventoryProviderRegistry;
+import com.github.razorplay01.inv_view.provider.PlayerInventoryProvider;
 import com.github.razorplay01.inv_view.util.InventoryLockManager;
 import com.github.razorplay01.inv_view.util.PermissionHandler;
 import com.mojang.authlib.GameProfile;
@@ -48,6 +49,11 @@ public class InvViewCommands {
     private int executeViewCommand(CommandContext<CommandSourceStack> context, InventoryProvider provider) throws CommandSyntaxException {
         ServerPlayer viewer = context.getSource().getPlayerOrException();
         ServerPlayer target = getRequestedPlayer(context);
+
+        if (viewer == target && provider instanceof PlayerInventoryProvider) {
+            context.getSource().sendFailure(Component.translatable("inv_view_neoforge.command.error.invalid_inventory"));
+            return 0;
+        }
 
         if (!provider.isAvailable(target)) {
             context.getSource().sendFailure(Component.translatable("inv_view_neoforge.command.error.inventory_not_available"));

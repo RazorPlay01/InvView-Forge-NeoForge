@@ -1,0 +1,9 @@
+{
+  "inv_view_neoforge.command.error.invalid_inventory": "No puedes abrir tu propio inventario.",
+  "inv_view_neoforge.command.error.inventory_in_use": "El inventario solicitado se encuentra en uso actualmente.",
+  "inv_view_neoforge.command.error.inventory_not_available": "El inventario solicitado no esta disponible.",
+  "inv_view_neoforge.player_connected": "El jugador %s se ha conectado, cerrando inventario.",
+  "inv_view_neoforge.player_disconnected": "El jugador %s se ha desconectado, cerrando inventario.",
+  "inv_view_neoforge.curios.inventory": "%s's Curios Inventory",
+  "inv_view_neoforge.curios.cosmetic_inventory": "%s's Cosmetic Curios Inventory"
+}

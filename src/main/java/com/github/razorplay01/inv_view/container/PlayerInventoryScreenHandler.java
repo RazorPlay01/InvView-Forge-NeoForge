@@ -1,6 +1,5 @@
 package com.github.razorplay01.inv_view.container;
 
-import com.github.razorplay01.inv_view.InvViewNeoforge;
 import com.github.razorplay01.inv_view.util.InventoryLockManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -19,14 +18,9 @@ public class PlayerInventoryScreenHandler extends AbstractInventoryScreenHandler
     private static final int HOTBAR_Y_OFFSET = 161;
 
     private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMNS * PLAYER_INVENTORY_ROWS;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
-    private static final int TE_INVENTORY_SLOT_COUNT = TARGET_INVENTORY_COLUMNS * TARGET_INVENTORY_ROWS;
 
     public PlayerInventoryScreenHandler(int syncId, ServerPlayer viewer, ServerPlayer target) {
-        super(MenuType.GENERIC_9x5, syncId, viewer, target, InventoryLockManager.InventoryType.PLAYER_INVENTORY);
+        super(MenuType.GENERIC_9x5, syncId, viewer, target, InventoryLockManager.InventoryType.PLAYER_INVENTORY, 9 * 5);
         addInventorySlots();
     }
 
@@ -49,38 +43,6 @@ public class PlayerInventoryScreenHandler extends AbstractInventoryScreenHandler
         for (int column = 0; column < HOTBAR_SLOT_COUNT; ++column) {
             this.addSlot(new Slot(viewer.getInventory(), column, 8 + column * SLOT_SIZE, HOTBAR_Y_OFFSET));
         }
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-        Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
-
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
-
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
-            InvViewNeoforge.LOGGER.info("Invalid slotIndex:{}", index);
-            return ItemStack.EMPTY;
-        }
-
-        if (sourceStack.isEmpty()) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
-
-        sourceSlot.onTake(player, sourceStack);
-        targetPlayer.getInventory().setChanged();
-        return copyOfSourceStack;
     }
 
     @Override

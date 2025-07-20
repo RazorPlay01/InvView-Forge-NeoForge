@@ -8,6 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -17,13 +19,15 @@ public abstract class AbstractInventoryScreenHandler extends AbstractContainerMe
     protected final UUID targetPlayerUUID;
     protected final InventoryLockManager.InventoryType lockType;
     protected final ServerPlayer viewer;
+    protected final int inventorySize;
 
-    protected AbstractInventoryScreenHandler(MenuType<?> type, int syncId, ServerPlayer viewer, ServerPlayer target, InventoryLockManager.InventoryType lockType) {
+    protected AbstractInventoryScreenHandler(MenuType<?> type, int syncId, ServerPlayer viewer, ServerPlayer target, InventoryLockManager.InventoryType lockType, int inventorySize) {
         super(type, syncId);
         this.targetPlayer = target;
         this.targetPlayerUUID = target.getUUID();
         this.lockType = lockType;
         this.viewer = viewer;
+        this.inventorySize = inventorySize;
         if (!tryLockInventory(viewer)) {
             viewer.closeContainer();
         }
@@ -31,7 +35,7 @@ public abstract class AbstractInventoryScreenHandler extends AbstractContainerMe
 
     protected boolean tryLockInventory(ServerPlayer viewer) {
         if (!InventoryLockManager.tryLock(targetPlayerUUID, lockType)) {
-            viewer.displayClientMessage(Component.translatable("inv_view_neoforge.inventory_in_use.error"), false);
+            viewer.displayClientMessage(Component.translatable("inv_view_neoforge.command.error.inventory_in_use"), false);
             return false;
         }
         return true;
@@ -51,6 +55,31 @@ public abstract class AbstractInventoryScreenHandler extends AbstractContainerMe
         // Liberar el bloqueo del inventario
         InventoryLockManager.unlock(targetPlayerUUID, lockType);
         super.removed(player);
+    }
+
+    @Override
+    public @NotNull ItemStack (@NotNull Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index < inventorySize) {
+                if (!this.moveItemStackTo(itemstack1, inventorySize, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(itemstack1, 0, inventorySize, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+        }
+
+        return itemstack;
     }
 
     @Override

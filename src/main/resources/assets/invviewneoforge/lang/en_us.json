@@ -1,5 +1,5 @@
 {
-  "inv_view_neoforge.inventory_in_use.error": "This inventory is currently in use.",
+  "inv_view_neoforge.command.error.invalid_inventory": "You can't open your own inventory.",
   "inv_view_neoforge.command.error.inventory_in_use": "The target player's inventory is in use.",
   "inv_view_neoforge.command.error.inventory_not_available": "The requested inventory is not available.",
   "inv_view_neoforge.player_connected": "%s has connected, closing inventory screen.",
