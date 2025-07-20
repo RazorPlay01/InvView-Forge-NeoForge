@@ -58,7 +58,7 @@ public abstract class AbstractInventoryScreenHandler extends AbstractContainerMe
     }
 
     @Override
-    public @NotNull ItemStack (@NotNull Player player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot != null && slot.hasItem()) {
