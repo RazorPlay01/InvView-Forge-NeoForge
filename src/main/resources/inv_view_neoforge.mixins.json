@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.github.razorplay01.inv_view.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EntityAccessor",
+    "ServerPlayerAccesor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
