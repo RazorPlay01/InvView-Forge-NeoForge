@@ -6,6 +6,7 @@ import com.github.razorplay01.inv_view.util.ITargetPlayerContainer;
 import com.github.razorplay01.inv_view.util.InventoryLockManager;
 import com.github.razorplay01.inv_view.util.PermissionHandler;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;

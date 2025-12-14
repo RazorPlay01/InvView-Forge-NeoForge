@@ -1,5 +1,6 @@
 package com.github.razorplay01.inv_view.command;
 
+import com.github.razorplay01.inv_view.InvViewNeoforge;
 import com.github.razorplay01.inv_view.api.InventoryProvider;
 import com.github.razorplay01.inv_view.api.InventoryProviderRegistry;
 import com.github.razorplay01.inv_view.mixin.EntityAccessor;
@@ -16,8 +17,8 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +38,7 @@ import java.util.Optional;
 public class InvViewCommands {
     public InvViewCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         var viewCommand = Commands.literal("view")
-                .requires(source -> source.hasPermission(2));
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));
 
         for (InventoryProvider provider : InventoryProviderRegistry.getAllProviders()) {
             viewCommand.then(Commands.literal(provider.getId())
@@ -47,6 +48,7 @@ public class InvViewCommands {
         }
 
         dispatcher.register(viewCommand);
+        InvViewNeoforge.LOGGER.info("Command register...");
     }
 
     private int executeViewCommand(CommandContext<CommandSourceStack> context, InventoryProvider provider) throws CommandSyntaxException {
@@ -108,7 +110,7 @@ public class InvViewCommands {
 
                 if (dimension.isPresent()) {
                     ServerLevel world = minecraftServer.getLevel(
-                            ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(dimension.get())));
+                            ResourceKey.create(Registries.DIMENSION, Identifier.tryParse(dimension.get())));
 
                     if (world != null) {
                         ((EntityAccessor) requestedPlayer).callSetWorld(world);

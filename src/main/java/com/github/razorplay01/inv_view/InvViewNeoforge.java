@@ -1,12 +1,12 @@
 package com.github.razorplay01.inv_view;
 
 import com.github.razorplay01.inv_view.event.InventoryProviderEvents;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ProblemReporter;
+import net.minecraft.util.Util;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.bus.api.IEventBus;
