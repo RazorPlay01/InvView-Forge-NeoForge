@@ -3,6 +3,7 @@
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import me.modmuss50.mpp.ModPublishExtension
 import me.modmuss50.mpp.ReleaseType
+import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.jvm.tasks.Jar
@@ -96,6 +97,7 @@ private fun ModPublishExtension.modrinth(
 	if (staging) apiEndpoint = "https://staging-api.modrinth.com/v2"
 
 	projectId = project.env("PUB_MODRINTH_PROJECT_ID")
+	environment = ModrinthEnvironment.SERVER_ONLY
 
 	this.accessToken = accessToken
 	minecraftVersions.addAll(listOf(ctx.currentMcVersion) + additionalVersions)
@@ -112,6 +114,8 @@ private fun ModPublishExtension.curseforge(
 	ctx: Context, additionalVersions: List<String>, accessToken: String?, deps: DependenciesConfig
 ) = curseforge {
 	projectId = project.env("PUB_CURSEFORGE_PROJECT_ID")
+	server = true
+	client = false
 
 	this.accessToken = accessToken
 	minecraftVersions.addAll(listOf(ctx.currentMcVersion) + additionalVersions)
