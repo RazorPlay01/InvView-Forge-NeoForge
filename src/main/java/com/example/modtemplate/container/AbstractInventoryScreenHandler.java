@@ -40,7 +40,12 @@ public abstract class AbstractInventoryScreenHandler extends AbstractContainerMe
 
 	protected boolean tryLockInventory(ServerPlayer viewer) {
 		if (!InventoryLockManager.tryLock(targetPlayerUUID, lockType)) {
-			viewer.displayClientMessage(Component.translatable("inv_view_neoforge.command.error.inventory_in_use"), false);
+			//? < 26 {
+			/*viewer.displayClientMessage(Component.translatable("inv_view_neoforge.command.error.inventory_in_use"), false);
+			*///?}
+			//? >= 26 {
+			viewer.sendSystemMessage(Component.translatable("inv_view_neoforge.command.error.inventory_in_use"), false);
+			 //?}
 			return false;
 		}
 		return true;
@@ -89,7 +94,12 @@ public abstract class AbstractInventoryScreenHandler extends AbstractContainerMe
 			}
 
 			if (itemstack1.isEmpty()) {
+				//? <=1.21.1{
+				/*slot.set(ItemStack.EMPTY);
+				*///?}
+				//? >1.21.1{
 				slot.setByPlayer(ItemStack.EMPTY);
+				//?}
 			} else {
 				slot.setChanged();
 			}

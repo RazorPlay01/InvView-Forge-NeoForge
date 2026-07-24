@@ -3,7 +3,6 @@ package com.example.modtemplate.command;
 import com.example.modtemplate.ModTemplate;
 import com.example.modtemplate.api.InventoryProvider;
 import com.example.modtemplate.api.InventoryProviderRegistry;
-import com.example.modtemplate.mixin.EntityAccessor;
 import com.example.modtemplate.provider.PlayerInventoryProvider;
 import com.example.modtemplate.util.InventoryLockManager;
 import com.example.modtemplate.util.PermissionHandler;
@@ -11,33 +10,33 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.logging.LogUtils;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.GameProfileArgument;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ClientInformation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.storage.TagValueInput;
-import net.minecraft.world.level.storage.ValueInput;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 public class InvViewCommands {
 	public InvViewCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+		//? <=1.21.1{
+		/*var viewCommand = Commands.literal("view")
+				.requires(commandSourceStack -> commandSourceStack.hasPermission(Commands.LEVEL_GAMEMASTERS));
+		*///?}
+		//? >1.21.1{
 		var viewCommand = Commands.literal("view")
 				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS));
+		//?}
 
 		for (InventoryProvider provider : InventoryProviderRegistry.getAllProviders()) {
 			viewCommand.then(Commands.literal(provider.getId())
@@ -87,32 +86,116 @@ public class InvViewCommands {
 		});
 	}
 
+	//? <=1.21.1{
+	/*private ServerPlayer getRequestedPlayer(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		MinecraftServer server = context.getSource().getServer();
+		GameProfile profile = GameProfileArgument.getGameProfiles(context, "target").iterator().next();
+		ServerPlayer player = server.getPlayerList().getPlayer(profile.getId());
+
+		if (player == null) {
+			// Intenta cargar datos de jugador offline
+			try {
+				//? 1.20.1{
+				//player = server.getPlayerList().getPlayerForLogin(profile);
+				//?}else{
+				player = server.getPlayerList().getPlayerForLogin(profile, null);
+				//?}
+				if (player == null) {
+					throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+							Component.literal("Player " + profile.getName() + " not found."));
+				}
+
+				//? 1.21.1{
+				/^Optional<net.minecraft.nbt.CompoundTag> compoundOpt = server.getPlayerList().load(player);
+				if (compoundOpt.isPresent()) {
+					net.minecraft.nbt.CompoundTag compound = compoundOpt.get();
+					^///?}else {
+				net.minecraft.nbt.CompoundTag compoundOpt = server.getPlayerList().load(player);
+				if (compoundOpt != null) {
+					net.minecraft.nbt.CompoundTag compound = compoundOpt;
+				//?}
+					// Leer la dimensión desde el NBT
+					String dimensionId = compound.getString("Dimension");
+					ResourceKey<net.minecraft.world.level.Level> dimension;
+					try {
+						//? >=1.20.1{
+						dimension = ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, Identifier.parse(dimensionId));
+						//?}else {
+						//dimension = ResourceKey.create(net.minecraft.core.Registry.DIMENSION_REGISTRY, Identifier.parse(dimensionId));
+						//?}
+					} catch (Exception e) {
+						dimension = net.minecraft.world.level.Level.OVERWORLD;
+					}
+					ServerLevel level = server.getLevel(dimension);
+					if (level != null) {
+						//? >=1.20.1{
+						player.setServerLevel(level);
+						//?}else {
+						//player.setLevel(level);
+						//?}
+					} else {
+						//? >= 1.20.1{
+						player.setServerLevel(server.overworld());
+						//?}else {
+						//player.setLevel(server.overworld());
+						//?}
+					}
+				} else {
+					//? >= 1.20.1{
+					player.setServerLevel(server.overworld());
+					//?}else {
+					//player.setLevel(server.overworld());
+					//?}
+				}
+			} catch (Exception e) {
+				throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
+						Component.literal("Failed to load player data for " + profile.getName() + ": " + e.getMessage()));
+			}
+		}
+		return player;
+	}
+	*///?}
+	//? >1.21.1{
 	private static ServerPlayer getRequestedPlayer(CommandContext<CommandSourceStack> context)
 			throws CommandSyntaxException {
 		MinecraftServer minecraftServer = context.getSource().getServer();
 
+		//? >=1.21.8{
 		net.minecraft.server.players.NameAndId playerConfigEntry = GameProfileArgument.getGameProfiles(context, "target").iterator().next();
 		ServerPlayer requestedPlayer = minecraftServer.getPlayerList().getPlayer(playerConfigEntry.name());
+		//?}
+		//? <1.21.8{
+		/*GameProfile requestedProfile = GameProfileArgument.getGameProfiles(context, "target").iterator().next();
+		ServerPlayer requestedPlayer = minecraftServer.getPlayerList().getPlayer(requestedProfile.getId());
+		*///?}
 
 		// If player is not currently online
 		if (requestedPlayer == null) {
+			//? >=1.21.8{
 			requestedPlayer = new ServerPlayer(minecraftServer, minecraftServer.overworld(), new GameProfile(playerConfigEntry.id(), playerConfigEntry.name()),
-					ClientInformation.createDefault());
-			Optional<ValueInput> readViewOpt = minecraftServer.getPlayerList()
-					.loadPlayerData(playerConfigEntry).map(playerData -> TagValueInput.create(new ProblemReporter.ScopedCollector(LogUtils.getLogger()), minecraftServer.registryAccess(), playerData));
+					net.minecraft.server.level.ClientInformation.createDefault());
+			Optional<net.minecraft.world.level.storage.ValueInput> readViewOpt = minecraftServer.getPlayerList()
+					.loadPlayerData(playerConfigEntry).map(playerData -> net.minecraft.world.level.storage.TagValueInput.create(new net.minecraft.util.ProblemReporter.ScopedCollector(com.mojang.logging.LogUtils.getLogger()), minecraftServer.registryAccess(), playerData));
+			//?}
+			//? <1.21.8{
+			/*requestedPlayer = new ServerPlayer(minecraftServer, minecraftServer.overworld(), requestedProfile,
+					net.minecraft.server.level.ClientInformation.createDefault());
+			Optional<net.minecraft.world.level.storage.ValueInput> readViewOpt = minecraftServer.getPlayerList()
+					.load(requestedPlayer, new net.minecraft.util.ProblemReporter.ScopedCollector(com.mojang.logging.LogUtils.getLogger()));
+			*///?}
 			readViewOpt.ifPresent(requestedPlayer::load);
 
 			// Avoids player's dimension being reset to the overworld
 			if (readViewOpt.isPresent()) {
-				ValueInput readView = readViewOpt.get();
+				net.minecraft.world.level.storage.ValueInput readView = readViewOpt.get();
 				Optional<String> dimension = readView.getString("Dimension");
 
 				if (dimension.isPresent()) {
 					ServerLevel world = minecraftServer.getLevel(
-							ResourceKey.create(Registries.DIMENSION, Identifier.tryParse(dimension.get())));
+							ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, Identifier.tryParse(dimension.get())));
 
 					if (world != null) {
-						((EntityAccessor) requestedPlayer).callSetWorld(world);
+						((com.example.modtemplate.mixin.EntityAccessor) requestedPlayer).callSetWorld(world);
 					}
 				}
 			}
@@ -120,4 +203,5 @@ public class InvViewCommands {
 
 		return requestedPlayer;
 	}
+	//?}
 }

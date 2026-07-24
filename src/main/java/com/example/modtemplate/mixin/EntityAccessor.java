@@ -1,4 +1,5 @@
 package com.example.modtemplate.mixin;
+//? >= 1.21.1{
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -10,3 +11,4 @@ public interface EntityAccessor {
 	@Invoker("setLevel")
 	void callSetWorld(Level world);
 }
+//?}

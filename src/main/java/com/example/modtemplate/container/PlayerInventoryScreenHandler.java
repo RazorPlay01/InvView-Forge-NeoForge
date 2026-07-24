@@ -1,10 +1,8 @@
 package com.example.modtemplate.container;
 
-import com.example.modtemplate.util.InventoryLockManager;
 import com.example.modtemplate.util.InventoryType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -46,10 +44,27 @@ public class PlayerInventoryScreenHandler extends AbstractInventoryScreenHandler
 		}
 	}
 
+	//? >= 26 {
 	@Override
-	public void clicked(int slotIndex, int button, ClickType actionType, Player player) {
+	public void clicked(int slotIndex, int buttonNum, net.minecraft.world.inventory.ContainerInput containerInput, Player player) {
 		if (slotIndex >= 41 && slotIndex <= 44) {
-			if (actionType == ClickType.QUICK_MOVE) {
+			if (containerInput == net.minecraft.world.inventory.ContainerInput.QUICK_MOVE) {
+				super.clicked(slotIndex, buttonNum, containerInput, player);
+			} else {
+				player.getInventory().setItem(slotIndex, ItemStack.EMPTY);
+			}
+		} else {
+			super.clicked(slotIndex, buttonNum, containerInput, player);
+		}
+		targetPlayer.getInventory().setChanged();
+		targetPlayer.inventoryMenu.sendAllDataToRemote();
+	}
+	//?}
+	//? < 26 {
+	/*@Override
+	public void clicked(int slotIndex, int button, net.minecraft.world.inventory.ClickType actionType, Player player) {
+		if (slotIndex >= 41 && slotIndex <= 44) {
+			if (actionType == net.minecraft.world.inventory.ClickType.QUICK_MOVE) {
 				super.clicked(slotIndex, button, actionType, player);
 			} else {
 				player.getInventory().setItem(slotIndex, ItemStack.EMPTY);
@@ -60,4 +75,5 @@ public class PlayerInventoryScreenHandler extends AbstractInventoryScreenHandler
 		targetPlayer.getInventory().setChanged();
 		targetPlayer.inventoryMenu.sendAllDataToRemote();
 	}
+	*///?}
 }

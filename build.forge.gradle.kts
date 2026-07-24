@@ -25,6 +25,15 @@ platform {
 	}
 }
 
+mixins {
+	common {
+		always(
+			"ServerPlayerAccesor"
+		)
+		minVersion("1.21.1", "EntityAccessor")
+	}
+}
+
 legacyForge {
 	version = "${prop("deps.minecraft")}-${prop("deps.forge")}"
 

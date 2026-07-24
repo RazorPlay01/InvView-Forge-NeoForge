@@ -25,6 +25,15 @@ platform {
 	}
 }
 
+mixins {
+	common {
+		always(
+			"ServerPlayerAccesor"
+		)
+		minVersion("1.21.1", "EntityAccessor")
+	}
+}
+
 neoForge {
 	version = prop("deps.neoforge")
 	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))

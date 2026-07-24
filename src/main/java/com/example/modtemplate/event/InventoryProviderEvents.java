@@ -4,12 +4,18 @@ import com.example.modtemplate.api.InventoryProvider;
 import com.example.modtemplate.api.InventoryProviderRegistry;
 import com.example.modtemplate.provider.EnderChestProvider;
 import com.example.modtemplate.provider.PlayerInventoryProvider;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+//? neoforge {
+import net.neoforged.bus.api.Event;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+//?} forge {
+/*import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+*///?}
 
 public class InventoryProviderEvents {
 	public static class RegisterInventoryProvidersEvent extends Event {

@@ -4,8 +4,12 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.Nullable;
+//? neoforge {
+import net.neoforged.fml.ModList;
+//?} forge {
+/*import net.minecraftforge.fml.ModList;
+*///?}
 
 public class PermissionHandler {
 	private static final boolean IS_LUCKPERMS_LOADED = ModList.get().isLoaded("luckperms");
@@ -24,9 +28,13 @@ public class PermissionHandler {
 
 	public static boolean hasPermission(CommandSourceStack source, String permission, int permissionLevel) {
 		if (!(source.getEntity() instanceof ServerPlayer player)) {
-			// Para comandos ejecutados por consola o bloques de comando, usar nivel de operador
+			//? <= 1.21.10{
+			/*return source.hasPermission(permissionLevel);
+			*///?}
+			//? > 1.21.10{
 			net.minecraft.server.permissions.Permission levelPerm = new net.minecraft.server.permissions.Permission.HasCommandLevel(net.minecraft.server.permissions.PermissionLevel.byId(permissionLevel));
 			return source.permissions().hasPermission(levelPerm);
+			//?}
 		}
 
 		if (IS_LUCKPERMS_LOADED && luckPermsApi != null) {
@@ -34,8 +42,12 @@ public class PermissionHandler {
 			return user.getCachedData().getPermissionData().checkPermission(permission).asBoolean();
 		}
 
-		// Fallback al sistema de permisos de Minecraft
+		//? <= 1.21.10{
+		/*return source.hasPermission(permissionLevel);
+		*///?}
+		//? > 1.21.10{
 		net.minecraft.server.permissions.Permission levelPerm = new net.minecraft.server.permissions.Permission.HasCommandLevel(net.minecraft.server.permissions.PermissionLevel.byId(permissionLevel));
 		return source.permissions().hasPermission(levelPerm);
+		//?}
 	}
 }

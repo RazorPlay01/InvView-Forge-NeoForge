@@ -1,10 +1,8 @@
 package com.example.modtemplate.container;
 
-import com.example.modtemplate.util.InventoryLockManager;
 import com.example.modtemplate.util.InventoryType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 
@@ -51,13 +49,24 @@ public class PlayerEnderChestScreenHandler extends AbstractInventoryScreenHandle
 		}
 	}
 
+	//? >= 26 {
 	@Override
-	public void clicked(int slotIndex, int button, ClickType actionType, Player player) {
+	public void clicked(int slotIndex, int buttonNum, net.minecraft.world.inventory.ContainerInput containerInput, Player player) {
+		super.clicked(slotIndex, buttonNum, containerInput, player);
+		targetPlayer.getEnderChestInventory().setChanged();
+		targetPlayer.inventoryMenu.sendAllDataToRemote();
+	}
+	//?}
+
+	//? < 26 {
+	/*@Override
+	public void clicked(int slotIndex, int button, net.minecraft.world.inventory.ClickType actionType, Player player) {
 		super.clicked(slotIndex, button, actionType, player);
 		// Marcar Ender Chest como modificado y sincronizar
 		targetPlayer.getEnderChestInventory().setChanged();
 		targetPlayer.inventoryMenu.sendAllDataToRemote();
 	}
+	*///?}
 
 	private static MenuType<?> getMenuType(int size) {
 		if (size >= 0 && size <= 9) {
