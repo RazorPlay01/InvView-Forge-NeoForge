@@ -1,26 +1,22 @@
-mod.id = "modtemplate"
-mod.name = "Mod Template"
-mod.group = "com.example"
-mod.version = "0.1.0"
-mod.channel_tag = "-alpha.2"
-mod.description = "Example Description"
-mod.authors = ["AuthorName", "AnotherAuthorName"]
-mod.contributors = ["ContributorName", "AnotherContributorName"]
-mod.inception_year = "2025"
+mod.id = "inv_view"
+mod.name = "Inv View"
+mod.group = "com.github.razorplay01"
+mod.version = "4.0.0"
+mod.channel_tag = "-beta.1"
+mod.description = "Allows you to open and manipulate the inventories and ender chests of online and offline players."
+mod.authors = ["RazorPlay01"]
+mod.contributors = []
+mod.inception_year = "2026"
 mod.license.name = "MIT"
 mod.license.url = "https://opensource.org/licenses/MIT"
 mod.license.dist = "repo"
-mod.sources_url = "https://github.com/rotgruengelb/stonecutter-mod-template"
-mod.homepage_url = "https://github.com/rotgruengelb/stonecutter-mod-template"
-mod.issues_url = "https://github.com/rotgruengelb/stonecutter-mod-template/issues"
-mod.discord_url = "https://discord.gg/aunYJB4wz9"
+mod.sources_url = "https://github.com/RazorPlay01/InvView_Forge"
+mod.homepage_url = "https://github.com/RazorPlay01/InvView_Forge"
+mod.issues_url = "https://github.com/RazorPlay01/InvView_Forge/issues"
+mod.discord_url = "https://discord.gg/YP3wDfqkRt"
 [[mod.pom.developers]]
-id = "authorname"
-name = "AuthorName"
-url = "https://github.com/ghost"
-[[mod.pom.developers]]
-id = "anotherauthorname"
-name = "AnotherAuthorName"
+id = "razorplay01"
+name = "RazorPlay01"
 url = "https://github.com/ghost"
 
 [fabric]

@@ -1,0 +1,10 @@
+{
+  "package": "com.github.razorplay01.inv_view.mixin",
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "${java}",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": ${common_array}
+}
