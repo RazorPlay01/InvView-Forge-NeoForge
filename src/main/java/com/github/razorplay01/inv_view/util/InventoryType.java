@@ -18,6 +18,8 @@ public final class InventoryType {
 	// Tipos predefinidos (para compatibilidad con el código existente)
 	public static final InventoryType PLAYER_INVENTORY = register("player_inventory", new InventoryType("player_inventory"));
 	public static final InventoryType ENDER_CHEST = register("ender_chest", new InventoryType("ender_chest"));
+	public static final InventoryType CURIOS = register("curios", new InventoryType("curios"));
+	public static final InventoryType CURIOS_COSMETIC = register("curios_cosmetic", new InventoryType("curios_cosmetic"));
 
 	public InventoryType(String id) {
 		this.id = Objects.requireNonNull(id, "id cannot be null");

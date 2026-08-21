@@ -73,11 +73,14 @@ mixin {
 repositories {
 	mavenCentral()
 	strictMaven("https://api.modrinth.com/maven", "maven.modrinth") { name = "Modrinth" }
+	strictMaven("https://maven.theillusivec4.top/") { name = "Illusive Soulworks maven" }
 }
 
 dependencies {
 	annotationProcessor("org.spongepowered:mixin:${libs.versions.mixin.get()}:processor")
 	compileOnly("net.luckperms:api:5.5")
+	compileOnly("top.theillusivec4.curios:curios-forge:${prop("deps.curios_version")}:api")
+	//runtimeOnly("top.theillusivec4.curios:curios-forge:${prop("deps.curios_version")}")
 	// implementation(libs.moulberry.mixinconstraints)
 	// jarJar(libs.moulberry.mixinconstraints)
 }

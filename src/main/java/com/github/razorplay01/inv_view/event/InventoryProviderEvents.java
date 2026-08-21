@@ -1,7 +1,10 @@
 package com.github.razorplay01.inv_view.event;
 
+import com.github.razorplay01.inv_view.ModTemplate;
 import com.github.razorplay01.inv_view.api.InventoryProvider;
 import com.github.razorplay01.inv_view.api.InventoryProviderRegistry;
+import com.github.razorplay01.inv_view.provider.CuriosCosmeticInventoryProvider;
+import com.github.razorplay01.inv_view.provider.CuriosInventoryProvider;
 import com.github.razorplay01.inv_view.provider.EnderChestProvider;
 import com.github.razorplay01.inv_view.provider.PlayerInventoryProvider;
 
@@ -38,9 +41,9 @@ public class InventoryProviderEvents {
 		RegisterInventoryProvidersEvent registerEvent = new RegisterInventoryProvidersEvent();
 		registerEvent.register(new PlayerInventoryProvider());
 		registerEvent.register(new EnderChestProvider());
-        /*if (ModList.get().isLoaded("curios")) {
-            registerEvent.register(new CuriosInventoryProvider());
-            registerEvent.register(new CuriosCosmeticInventoryProvider());
-        }*/
+		if (ModTemplate.xplat().isModLoaded("curios")) {
+			registerEvent.register(new CuriosInventoryProvider());
+			registerEvent.register(new CuriosCosmeticInventoryProvider());
+		}
 	}
 }

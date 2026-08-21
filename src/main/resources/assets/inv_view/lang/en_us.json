@@ -5,5 +5,7 @@
   "inv_view_neoforge.player_connected": "%s has connected, closing inventory screen.",
   "inv_view_neoforge.player_disconnected": "%s has disconnected, closing inventory screen.",
   "inv_view_neoforge.curios.inventory": "%s's Curios Inventory",
-  "inv_view_neoforge.curios.cosmetic_inventory": "%s's Cosmetic Curios Inventory"
+  "inv_view_neoforge.curios.cosmetic_inventory": "%s's Cosmetic Curios Inventory",
+  "inv_view_neoforge.curios.previous_page": "Previous Page (%1$s/%2$s)",
+  "inv_view_neoforge.curios.next_page": "Next Page (%1$s/%2$s)"
 }

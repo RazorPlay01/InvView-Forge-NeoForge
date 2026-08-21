@@ -96,8 +96,8 @@ public class InvViewCommands {
 			// Intenta cargar datos de jugador offline
 			try {
 				//? 1.20.1{
-				//player = server.getPlayerList().getPlayerForLogin(profile);
-				//?}else{
+				/^player = server.getPlayerList().getPlayerForLogin(profile);
+				^///?}else{
 				player = server.getPlayerList().getPlayerForLogin(profile, null);
 				//?}
 				if (player == null) {
