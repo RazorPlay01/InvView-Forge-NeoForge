@@ -1,7 +1,7 @@
 mod.id = "inv_view"
 mod.name = "Inv View"
 mod.group = "com.github.razorplay01"
-mod.version = "4.1.0"
+mod.version = "4.2.0"
 mod.channel_tag = ""
 mod.description = "Allows you to open and manipulate the inventories and ender chests of online and offline players."
 mod.authors = ["RazorPlay01"]

@@ -27,7 +27,7 @@ import net.minecraft.util.Util;
 public class ModTemplate {
 
 	public static final String MOD_ID = /*$ mod_id*/ "inv_view";
-	public static final String MOD_VERSION = /*$ mod_version*/ "4.0.0";
+	public static final String MOD_VERSION = /*$ mod_version*/ "4.1.0";
 	public static final String MOD_FRIENDLY_NAME = /*$ mod_name*/ "Inv View";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 

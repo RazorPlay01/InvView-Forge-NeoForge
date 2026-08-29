@@ -98,7 +98,7 @@ public class InvViewCommands {
 				//? 1.20.1{
 				/^player = server.getPlayerList().getPlayerForLogin(profile);
 				^///?}else{
-				player = server.getPlayerList().getPlayerForLogin(profile, null);
+				player = server.getPlayerList().getPlayerForLogin(profile, net.minecraft.server.level.ClientInformation.createDefault());
 				//?}
 				if (player == null) {
 					throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
