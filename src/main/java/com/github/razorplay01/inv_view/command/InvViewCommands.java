@@ -98,7 +98,7 @@ public class InvViewCommands {
 				//? 1.20.1{
 				/^player = server.getPlayerList().getPlayerForLogin(profile);
 				^///?}else{
-				player = server.getPlayerList().getPlayerForLogin(profile, net.minecraft.server.level.ClientInformation.createDefault());
+				player = server.getPlayerList().getPlayerForLogin(profile,/^?1.19.2{ ^//^null^//^?} 1.21.1 { ^/ /^net.minecraft.server.level.ClientInformation.createDefault()^//^?} ^/);
 				//?}
 				if (player == null) {
 					throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
@@ -121,8 +121,8 @@ public class InvViewCommands {
 						//? >=1.20.1{
 						dimension = ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION, Identifier.parse(dimensionId));
 						//?}else {
-						//dimension = ResourceKey.create(net.minecraft.core.Registry.DIMENSION_REGISTRY, Identifier.parse(dimensionId));
-						//?}
+						/^dimension = ResourceKey.create(net.minecraft.core.Registry.DIMENSION_REGISTRY, Identifier.parse(dimensionId));
+						^///?}
 					} catch (Exception e) {
 						dimension = net.minecraft.world.level.Level.OVERWORLD;
 					}
@@ -131,21 +131,21 @@ public class InvViewCommands {
 						//? >=1.20.1{
 						player.setServerLevel(level);
 						//?}else {
-						//player.setLevel(level);
-						//?}
+						/^player.setLevel(level);
+						^///?}
 					} else {
 						//? >= 1.20.1{
 						player.setServerLevel(server.overworld());
 						//?}else {
-						//player.setLevel(server.overworld());
-						//?}
+						/^player.setLevel(server.overworld());
+						^///?}
 					}
 				} else {
 					//? >= 1.20.1{
 					player.setServerLevel(server.overworld());
 					//?}else {
-					//player.setLevel(server.overworld());
-					//?}
+					/^player.setLevel(server.overworld());
+					^///?}
 				}
 			} catch (Exception e) {
 				throw new CommandSyntaxException(CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument(),
