@@ -1,7 +1,7 @@
 mod.id = "inv_view"
 mod.name = "Inv View"
 mod.group = "com.github.razorplay01"
-mod.version = "4.2.0"
+mod.version = "4.2.1"
 mod.channel_tag = ""
 mod.description = "Allows you to open and manipulate the inventories and ender chests of online and offline players."
 mod.authors = ["RazorPlay01"]
@@ -90,3 +90,8 @@ publish.additionalVersions = ["26.1.1", "26.1"]
 deps.minecraft = "26.2"
 deps.neoforge = "26.2.0.13-beta"
 deps.curios_version = "16.0.0+26.2"
+
+[neoforge."26.3"]
+deps.minecraft = "26.3"
+deps.neoforge = "26.3.0.7-beta"
+deps.curios_version = "17.0.0-beta+26.3"

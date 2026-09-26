@@ -22,6 +22,7 @@ stonecutter {
 		fun match(version: String, vararg loaders: String) =
 			loaders.forEach { version("$version-$it", version).buildscript = getBuildscript(it, version) }
 
+		match("26.3", "neoforge")
 		match("26.2", "neoforge")
 		match("26.1.2", "neoforge")
 		match("1.21.11", "neoforge")
